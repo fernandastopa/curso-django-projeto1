@@ -4,7 +4,7 @@ from django.urls import reverse
 # para exibir prints, -rP
 
 
-class TestRecipeURLs(TestCase):
+class RecipeURLsTest(TestCase):
     def test_recipe_home_url_is_correct(self):
         url = reverse('recipes:home')
         self.assertEqual(url, '/')  # não requer path pois home é "/"
