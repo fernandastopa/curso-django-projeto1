@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 
-# para exibir prints, -rP
+# para exibir prints, -rP, configurado no pytest.ini
 
 
 class RecipeURLsTest(TestCase):

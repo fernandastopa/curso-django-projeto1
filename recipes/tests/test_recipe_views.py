@@ -29,8 +29,22 @@ class RecipeViewsTest(TestCase):
         )
         self.assertIs(view.func, views.category)
 
+    def test_recipe_category_view_returns_status_code_404(self):
+        response = self.client.get(
+            reverse('recipes:category',
+                    kwargs={'category_id': 9999})
+        )
+        self.assertEqual(response.status_code, 404)
+
     def test_recipe_detail_view_function_is_correct(self):
         view = resolve(
             reverse('recipes:recipe', kwargs={'id': 1})
         )
         self.assertIs(view.func, views.recipe)
+
+    def test_recipe_detail_view_returns_status_code_404(self):
+        response = self.client.get(
+            reverse('recipes:recipe',
+                    kwargs={'id': 9999})
+        )
+        self.assertEqual(response.status_code, 404)
