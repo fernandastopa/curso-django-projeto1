@@ -1,8 +1,10 @@
 from django.urls import reverse, resolve
 from recipes import views
+# from unittest import skip
+
 from .test_recipe_base import RecipeTestBase
 
-
+# @skip('Vou pular a classe inteira de testes')
 class RecipeViewsTest(RecipeTestBase):
 
     # setUp()
@@ -27,6 +29,9 @@ class RecipeViewsTest(RecipeTestBase):
             '<h1>[404] Oops... There is nothing here :(</h1>',
             response.content.decode('utf-8')
         )
+
+        # Testando self.fail()
+        # self.fail('Testando se vou ser exibido como AssertionError')
 
     def test_recipe_home_template_loads_recipes(self):
         self.make_recipe(category_data={
