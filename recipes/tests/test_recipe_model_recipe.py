@@ -1,6 +1,7 @@
-from .test_recipe_base import RecipeTestBase
 from django.core.exceptions import ValidationError
 from parameterized import parameterized
+
+from .test_recipe_base import RecipeTestBase, Recipe
 
 
 class RecipeModelTest(RecipeTestBase):
@@ -8,12 +9,23 @@ class RecipeModelTest(RecipeTestBase):
         self.recipe = self.make_recipe()
         return super().setUp()
 
-    def test_recipe_title_raises_error_when_title_is_grater_than_65(self):
-        self.recipe.title = "A" * 70
+    def make_recipe_no_defaults(self):
+        recipe = Recipe(
+            category=self.make_category(name='Teste default category'),
+            author=self.make_author(username='newuser'),
+            title='Title test',
+            description='Description test',
+            slug='slug-test',
+            preparation_time=1,
+            preparation_time_unit='minutes',
+            servings=1,
+            servings_unit='people',
+            preparation_steps='Preparation steps test',
+        )
+        recipe.full_clean()
+        recipe.save()
+        return recipe
 
-        with self.assertRaises(ValidationError):
-            # Vai levantar uma exceção quando fizer o full_clean()
-            self.recipe.full_clean()  # Aqui ocorre a validação
 
     @parameterized.expand([
             ('title', 65),
@@ -25,3 +37,28 @@ class RecipeModelTest(RecipeTestBase):
         setattr(self.recipe, field, 'A' * (max_length + 1))
         with self.assertRaises(ValidationError):
             self.recipe.full_clean()
+
+    def test_recipe_preparation_steps_is_html_is_false_by_default(self):
+        recipe = self.make_recipe_no_defaults()
+        self.assertFalse(
+            recipe.preparation_steps_is_html,
+            msg='Recipe preparation_steps_is_html is not false',
+        )
+
+    def test_recipe_is_published_is_false_by_default(self):
+        recipe = self.make_recipe_no_defaults()
+        self.assertFalse(
+            recipe.is_published,
+            msg='Recipe is_published is not false',
+        )
+
+    def test_recipe_string_representation(self):
+        needed = 'Testing Representation'
+        self.recipe.title = needed
+        self.recipe.full_clean()
+        self.recipe.save()
+        self.assertEqual(
+            str(self.recipe), needed,
+            msg=f'Recipe string representation needs to be '
+                f'"{needed}". got {str(self.recipe)}.'
+        )
