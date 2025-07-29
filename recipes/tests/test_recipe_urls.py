@@ -18,3 +18,12 @@ class RecipeURLsTest(TestCase):
         # recipes:recipe > nome do app e name da url
         url = reverse('recipes:recipe', kwargs={'id': 1})
         self.assertEqual(url, '/recipes/1/')  # path de fato
+
+    def test_recipe_search_url_is_correct(self):
+        url = reverse('recipes:search')
+        self.assertEqual(url, '/recipes/search/')
+
+# Ciclo TDD: RED > GREEN > REFACTOR
+# 1º: Testar o teste antes mesmo de implementar o código (red)
+# 2º  Implementar o código e rodar o teste (green)
+# 3º  Refatorar o que precisa
