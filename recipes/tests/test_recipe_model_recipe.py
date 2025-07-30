@@ -15,7 +15,7 @@ class RecipeModelTest(RecipeTestBase):
             author=self.make_author(username='newuser'),
             title='Title test',
             description='Description test',
-            slug='slug-test',
+            slug='slug-test-for-no-defaults',
             preparation_time=1,
             preparation_time_unit='minutes',
             servings=1,
@@ -25,7 +25,6 @@ class RecipeModelTest(RecipeTestBase):
         recipe.full_clean()
         recipe.save()
         return recipe
-
 
     @parameterized.expand([
             ('title', 65),
